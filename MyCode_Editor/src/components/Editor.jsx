@@ -297,7 +297,14 @@ const Editor = forwardRef(({
 
   return <div ref={editorRef} />;
 });
+<<<<<<< Updated upstream
 
 Editor.displayName = "Editor";
 
 export default Editor;
+=======
+
+Editor.displayName = "Editor";
+
+export default Editor;
+>>>>>>> Stashed changes
