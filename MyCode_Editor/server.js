@@ -90,7 +90,7 @@ socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
 
     
 socket.on(ACTIONS.LANGUAGE_CHANGE, ({ roomId, language, code }) => {
-  console.log('Language change received:', { roomId, language, code });
+  //console.log('Language change received:', { roomId, language, code });
   
   // Broadcast language change to all other clients in the room
   socket.in(roomId).emit(ACTIONS.LANGUAGE_CHANGE, { 
@@ -101,13 +101,27 @@ socket.on(ACTIONS.LANGUAGE_CHANGE, ({ roomId, language, code }) => {
 
 // Also update your SYNC_CODE handler to include language
 socket.on(ACTIONS.SYNC_CODE, ({ code, language, socketId }) => {
-  console.log('Syncing code and language:', { code, language, socketId });
+  //console.log('Syncing code and language:', { code, language, socketId });
   
   // Send current code and language to the specific client
   io.to(socketId).emit(ACTIONS.CODE_CHANGE, code);
   if (language) {
     io.to(socketId).emit(ACTIONS.LANGUAGE_CHANGE, { language, code });
   }
+});
+
+// 🚀 NEW: Handle code execution results broadcasting
+socket.on(ACTIONS.CODE_EXECUTION, ({ roomId, result, isError, executedBy }) => {
+  console.log('Code execution result received:', { roomId, isError, executedBy });
+  
+  // Broadcast execution result to ALL clients in the room (including sender)
+  // This ensures everyone sees the same output
+  io.to(roomId).emit(ACTIONS.CODE_OUTPUT, {
+    result,
+    isError,
+    executedBy,
+    timestamp: new Date().toISOString()
+  });
 });
 
 
@@ -145,9 +159,3 @@ const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);
 });
-
-// app.get("/", (req, res) => {
-//   res.json({
-//     message: "hello world",
-//   });
-// });
