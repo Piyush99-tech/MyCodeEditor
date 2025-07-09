@@ -365,8 +365,6 @@ public class Main {
   );
 };
 
-<<<<<<< Updated upstream
+
 export default EditorPage;
-=======
-export default EditorPage;
->>>>>>> Stashed changes
+
