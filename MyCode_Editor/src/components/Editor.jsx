@@ -7,6 +7,8 @@ import { java } from "@codemirror/lang-java";
 import { syntaxHighlighting } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 import { HighlightStyle } from "@codemirror/language";
+import { keymap } from "@codemirror/view";
+import { insertTab } from "@codemirror/commands";
 import ACTIONS from "../Actions";
 
 // 🧠 Custom Theme
@@ -34,6 +36,17 @@ const myDarkTheme = EditorView.theme(
       backgroundColor: "#1e1e1e",
       color: "#555",
       border: "none",
+    },
+    // Ensure proper scrolling for long lines
+    ".cm-scroller": {
+      overflowX: "auto",
+      overflowY: "auto",
+    },
+    ".cm-editor": {
+      height: "100%",
+    },
+    ".cm-focused": {
+      outline: "none",
     },
   },
   { dark: true }
@@ -179,6 +192,15 @@ const Editor = forwardRef(({
         getLanguageExtension(language),
         myDarkTheme,
         syntaxHighlighting(myHighlightStyle),
+        // 🎯 TAB SUPPORT - Use insertTab instead of indentWithTab
+        keymap.of([{
+          key: "Tab",
+          run: insertTab
+        }]),
+        // Additional editor configuration
+        EditorView.lineWrapping,
+        EditorState.tabSize.of(4),
+        EditorState.allowMultipleSelections.of(true),
         // Add change listener for collaboration
         EditorView.updateListener.of((update) => {
           if (update.docChanged && !isRemoteChange.current) {
@@ -295,11 +317,18 @@ const Editor = forwardRef(({
     }
   }, [socketRef.current, roomId]);
 
-  return <div ref={editorRef} />;
+  return (
+    <div 
+      ref={editorRef} 
+      style={{ 
+        height: '100%', 
+        width: '100%',
+        overflow: 'hidden' // Prevent container overflow
+      }} 
+    />
+  );
 });
-
 
 Editor.displayName = "Editor";
 
 export default Editor;
-
