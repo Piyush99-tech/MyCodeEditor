@@ -209,10 +209,10 @@ public class Main {
   }
 
   return (
-    <div className="flex h-screen bg-gray-900">
+    <div className="flex h-screen bg-gray-900 overflow-hidden">
       {/* Sidebar */}
       <div
-        className={`bg-gray-800 text-white transition-all duration-300 ease-in-out ${
+        className={`bg-gray-800 text-white transition-all duration-300 ease-in-out flex-shrink-0 ${
           sidebarVisible ? "w-60" : "w-0"
         } overflow-hidden`}
       >
@@ -247,9 +247,9 @@ public class Main {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="bg-gray-800 text-white p-3 border-b border-gray-700">
+        <div className="bg-gray-800 text-white p-3 border-b border-gray-700 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {/* Sidebar Toggle Button */}
@@ -319,7 +319,7 @@ public class Main {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 002 2z"
                   />
                 </svg>
               </button>
@@ -328,9 +328,9 @@ public class Main {
         </div>
 
         {/* Editor and Output Container */}
-        <div className="flex-1 flex">
+        <div className="flex-1 flex min-h-0">
           {/* Editor */}
-          <div className="flex-1 relative">
+          <div className="flex-1 relative min-w-0 overflow-hidden">
             <Editor
               ref={editorRef}
               language={selectedLanguage}
@@ -344,7 +344,7 @@ public class Main {
 
           {/* Output Panel - Sliding from right */}
           <div
-            className={`bg-gray-800 border-l border-gray-700 transition-all duration-300 ease-in-out ${
+            className={`bg-gray-800 border-l border-gray-700 transition-all duration-300 ease-in-out flex-shrink-0 ${
               outputVisible ? "w-96" : "w-0"
             } overflow-hidden`}
           >
@@ -367,4 +367,3 @@ public class Main {
 
 
 export default EditorPage;
-
